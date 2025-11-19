@@ -1,0 +1,275 @@
+// One-file React component: One-page website template using Tailwind CSS
+// How to use:
+// 1. Add Tailwind CSS to your project (https://tailwindcss.com/docs/installation)
+// 2. Import this component into your app and render it.
+// 3. Customize content, colors, images and links below.
+
+import React from 'react';
+
+export default function Website() {
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+      {/* NAVBAR */}
+      <header className="bg-white shadow-sm sticky top-0 z-30">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center text-white font-bold">E</div>
+            <span className="font-serif font-semibold text-lg">Elij&leitura</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+            <a href="#categories" className="hover:text-slate-900">Categorias</a>
+            <a href="#about-author" className="hover:text-slate-900">Sobre mim</a>
+            <a href="#posts" className="hover:text-slate-900">Posts</a>
+            <button id="darkModeToggle" className="px-3 py-2 rounded-lg bg-purple-200 text-purple-900 hover:bg-purple-300 transition">🌙</button>
+          </nav>
+          <button className="md:hidden p-2 rounded-lg bg-slate-100">☰</button>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <main>
+        <section className="bg-gradient-to-br from-purple-50 to-white py-20">
+          <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">Bem-vinda ao Elij&leitura — seu espaço elegante de leitura</h1>
+              <p className="mt-4 text-lg text-slate-600">Um blog minimalista e elegante para textos, reflexões e literatura.</p>
+              <div className="mt-6 flex gap-4">
+                <a href="#contact" className="inline-block px-6 py-3 rounded-lg bg-purple-600 text-white font-semibold hover:opacity-95">Comece agora</a>
+                <a href="#features" className="inline-block px-6 py-3 rounded-lg border border-slate-200 text-slate-700">Ver recursos</a>
+              </div>
+
+              <div className="mt-8 grid grid-cols-3 gap-3 text-sm text-slate-500">
+                <div className="p-3 bg-white rounded-lg shadow-sm">Entrega rápida</div>
+                <div className="p-3 bg-white rounded-lg shadow-sm">Design responsivo</div>
+                <div className="p-3 bg-white rounded-lg shadow-sm">Fácil de editar</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center">
+              <div className="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1529336953128-30b54f1a8a37?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Mockup" className="w-full h-64 object-cover" />
+                <div className="p-6">
+                  <h3 className="font-semibold text-lg">Exemplo de Projeto</h3>
+                  <p className="mt-2 text-sm text-slate-600">Um pequeno destaque para mostrar como sua página se parece em dispositivos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        {/* CATEGORIES (FEATURES → BLOG CATEGORIES) */}
+        <section id="categories" className="py-14">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <h2 className="text-2xl font-bold text-purple-900">Categorias</h2>
+            <p className="text-slate-600 mt-2">Organize seu blog por temas e estilos.</p>
+
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="p-6 bg-white rounded-xl shadow-sm border border-purple-100">
+                <h4 className="font-semibold text-purple-900">Reflexões</h4>
+                <p className="mt-2 text-sm text-slate-600">Textos profundos e sentimentais.</p>
+              </div>
+              <div className="p-6 bg-white rounded-xl shadow-sm border border-purple-100">
+                <h4 className="font-semibold text-purple-900">Fanfics</h4>
+                <p className="mt-2 text-sm text-slate-600">Histórias criativas autorais.</p>
+              </div>
+              <div className="p-6 bg-white rounded-xl shadow-sm border border-purple-100">
+                <h4 className="font-semibold text-purple-900">Resenhas</h4>
+                <p className="mt-2 text-sm text-slate-600">Opiniões sobre livros e autores.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* PRICING (simple) */}
+        {/* BLOG POSTS SECTION */}
+        <section id="posts" className="py-16 bg-purple-50/40">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-2xl font-bold text-center text-purple-900">Posts Recentes</h2>
+            <p className="text-slate-600 text-center mt-2">Últimas reflexões, histórias e pensamentos.</p>
+
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+              <article className="p-6 bg-white rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition">
+                <h3 className="font-semibold text-lg text-purple-900">Título do Post 1</h3>
+                <p className="mt-2 text-sm text-slate-600">Um breve resumo do seu texto para chamar a atenção do leitor.</p>
+                <button className="mt-4 text-purple-700 font-medium hover:underline">Ler mais →</button>
+              </article>
+
+              <article className="p-6 bg-white rounded-xl shadow-sm border border-purple-100 hover:shadow-md transition">
+                <h3 className="font-semibold text-lg text-purple-900">Título do Post 2</h3>
+                <p className="mt-2 text-sm text-slate-600">Uma pequena prévia que deixe o leitor curioso.</p>
+                <button className="mt-4 text-purple-700 font-medium hover:underline">Ler mais →</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* ABOUT */}
+        <section id="about-author" className="py-16 bg-purple-50/20">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-3xl font-serif font-bold text-purple-900">Sobre a Autora</h2>
+            <p className="mt-4 text-slate-700 leading-relaxed max-w-2xl mx-auto">
+              Olá! Eu sou Elij, apaixonada por leitura, escrita e histórias que fazem o coração vibrar. 
+              Este blog nasceu para registrar pensamentos, fanfics, resenhas e tudo o que me inspira.
+            </p>
+            <div className="mt-8 w-32 h-32 mx-auto rounded-full bg-purple-200 shadow-inner"></div>
+          </div>
+        </section>
+
+        {/* CONTACT */}
+        <section id="contact" className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-6">
+            <h2 className="text-2xl font-bold text-center">Fale conosco</h2>
+            <p className="text-slate-600 text-center mt-2">Preencha o formulário e nós entraremos em contato.</p>
+
+            <form className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input className="p-3 rounded-lg border border-slate-200" type="text" placeholder="Nome" />
+              <input className="p-3 rounded-lg border border-slate-200" type="email" placeholder="Email" />
+              <input className="p-3 rounded-lg border border-slate-200 md:col-span-2" type="text" placeholder="Assunto" />
+              <textarea className="p-3 rounded-lg border border-slate-200 md:col-span-2" rows="5" placeholder="Mensagem"></textarea>
+              <button className="md:col-span-2 py-3 rounded-lg bg-purple-600 text-white font-semibold">Enviar mensagem</button>
+            </form>
+
+            <p className="text-sm text-slate-500 mt-4">Observação: este formulário é front-end apenas — integre com seu back-end favorito (Formspree, Netlify Forms, API própria etc.).</p>
+          </div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="bg-slate-900 text-slate-200 py-8">
+          <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <div className="font-semibold">Elij&leitura</div>
+              <div className="text-sm text-slate-400">© {new Date().getFullYear()} Elij&leitura. Todos os direitos reservados.</div>
+            </div>
+            <div className="text-sm text-slate-400">Feito com ♥︎ — Personalize como quiser.</div>
+          </div>
+        <footer className="py-10 bg-purple-900 text-purple-100 mt-20">
+  <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+    <div>
+      <h3 className="font-serif text-xl mb-3">Elij&leitura</h3>
+      <p className="text-sm text-purple-200">Blog elegante de leitura, fanfics e reflexões.</p>
+    </div>
+    <div>
+      <h4 className="font-semibold mb-3">Navegação</h4>
+      <ul className="space-y-2 text-purple-200 text-sm">
+        <li><a href="#categories">Categorias</a></li>
+        <li><a href="#posts">Posts Recentes</a></li>
+        <li><a href="#all-posts">Todos os Posts</a></li>
+        <li><a href="#about-author">Sobre Mim</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 className="font-semibold mb-3">Redes Sociais</h4>
+      <ul className="space-y-2 text-purple-200 text-sm">
+        <li>Instagram</li>
+        <li>TikTok</li>
+        <li>Pinterest</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+const toggle = document.getElementById('darkModeToggle');
+toggle?.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+});
+</script>
+      
+
+{/* ALL POSTS PAGE */}
+<section id="all-posts" className="py-20 bg-white border-t border-purple-100">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-3xl font-serif font-bold text-purple-900 text-center">Todos os Posts</h2>
+    <p className="text-center text-slate-600 mt-2">Organizados para você encontrar qualquer leitura.</p>
+  </div>
+</section>
+
+
+{/* ALL POSTS PAGE */}
+<section id="all-posts" className="py-16 bg-white">
+  <div className="max-w-5xl mx-auto px-6">
+    <h2 className="text-3xl font-serif font-bold text-purple-900 text-center">Todos os Posts</h2>
+    <p className="text-slate-700 text-center mt-2">Uma coleção completa de tudo o que já escrevi.</p>
+    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <article className="p-6 bg-purple-50 rounded-xl shadow-sm border border-purple-100">
+        <h3 className="font-semibold text-lg text-purple-900">Título Completo do Post</h3>
+        <p className="mt-2 text-sm text-slate-600">Resumo do conteúdo para prévia.</p>
+        <button className="mt-4 text-purple-700 font-medium hover:underline">Ler mais →</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+{/* BOOK GALLERY */}
+<section id="books" className="py-16 bg-purple-50/40">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-3xl font-serif font-bold text-purple-900 text-center">Meus Livros Favoritos</h2>
+    <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+      <div className="h-48 bg-purple-200 rounded-xl shadow-inner"></div>
+      <div className="h-48 bg-purple-200 rounded-xl shadow-inner"></div>
+      <div className="h-48 bg-purple-200 rounded-xl shadow-inner"></div>
+      <div className="h-48 bg-purple-200 rounded-xl shadow-inner"></div>
+    </div>
+  </div>
+</section>
+
+{/* TAG SYSTEM */}
+<section id="tags" className="py-14 bg-white">
+  <div className="max-w-4xl mx-auto px-6 text-center">
+    <h2 className="text-2xl font-serif font-semibold text-purple-900">Tags</h2>
+    <div className="mt-6 flex flex-wrap justify-center gap-3">
+      <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full">Romance</span>
+      <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full">Fanfic</span>
+      <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full">Reflexão</span>
+      <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full">Poesia</span>
+    </div>
+  </div>
+</section>
+
+{/* BANNER HERO TEXTURE */}
+<style>{`
+.hero-texture {
+  background: linear-gradient(135deg, #f4e6ff, #e3d4ff);
+  background-size: cover;
+}
+`}</style>
+
+  <!-- Domínio -->
+  <h2 class="text-xl font-semibold mb-4">Domínio</h2>
+  <p class="text-gray-700 mb-4">Verifique se o domínio está disponível e escolha o nome ideal para seu site.</p>
+
+  <!-- Edição no Canva -->
+  <h2 class="text-xl font-semibold mb-4">Edição no Canva</h2>
+  <p class="text-gray-700 mb-4">Crie artes profissionais e edite seus designs com facilidade usando o Canva.</p>
+
+  <!-- Vídeos para Instagram e YouTube -->
+  <h2 class="text-xl font-semibold mb-4">Vídeos para Instagram e YouTube</h2>
+  <p class="text-gray-700 mb-4">Produza vídeos curtos e longos com qualidade profissional para suas redes.</p>
+
+  <!-- Edição de Foto -->
+  <h2 class="text-xl font-semibold mb-4">Edição de Foto</h2>
+  <p class="text-gray-700 mb-4">Melhore suas imagens com ferramentas avançadas de edição.</p>
+
+  <!-- Portfólio -->
+  <h2 class="text-xl font-semibold mb-4">Portfólio</h2>
+  <p class="text-gray-700 mb-4">Crie um portfólio moderno e profissional para apresentar seus trabalhos.</p>
+
+  <!-- Loja e Destaques -->
+  <h2 class="text-xl font-semibold mb-4">Loja e Destaques</h2>
+  <p class="text-gray-700 mb-4">Configure sua loja online e otimize seu perfil com destaques personalizados.</p>
+
+  <!-- Páginas Adicionais -->
+  <h2 class="text-xl font-semibold mb-4">Páginas Adicionais</h2>
+  <ul class="list-disc pl-6 text-gray-700 mb-4">
+    <li>Sobre</li>
+    <li>Contato</li>
+    <li>Serviços</li>
+    <li>Valores</li>
+    <li>Portfólio</li>
+  </ul>
+
+</main>
+    </div>
+  );
+}
