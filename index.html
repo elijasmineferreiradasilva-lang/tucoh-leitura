@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conversor de Unidades — Roxo & Preto</title>
+  <style>
+    :root{
+      --bg:#000000;
+      --panel:#2b0a3a; /* deep purple */
+      --accent:#7b2cbf;
+      --accent-2:#9d4edd;
+      --glass: rgba(255,255,255,0.04);
+      --text:#f6f6f8;
+      --muted: #bdb8c6;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg),#070707 60%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .app{
+      width:100%;
+      max-width:1100px;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      background:linear-gradient(180deg,var(--panel), rgba(43,10,58,0.9));
+      border:1px solid rgba(255,255,255,0.04);
+    }
+
+    /* left menu */
+    .sidebar{
+      padding:24px;
+      background:linear-gradient(180deg, rgba(123,44,191,0.12), rgba(157,78,221,0.06));
+    }
+    h1{font-size:20px;margin:0 0 8px}
+    p.lead{margin:0 0 18px;color:var(--muted);font-size:13px}
+    .categories{display:flex;flex-direction:column;gap:10px}
+    .cat-btn{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px 12px;border-radius:10px;color:var(--text);text-align:left;cursor:pointer;font-weight:600;
+    }
+    .cat-btn.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 6px 18px rgba(155,77,255,0.12);}
+
+    /* main */
+    .main{
+      padding:28px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6));
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);
+      margin-bottom:18px;
+    }
+    .row{display:flex;gap:12px;align-items:center}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="number"], select{
+      width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);color:var(--text);font-size:16px;
+    }
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .result{font-size:20px;font-weight:700;color:var(--accent-2);}
+    .footer-meta{font-size:12px;color:var(--muted);}
+
+    /* responsive */
+    @media (max-width:900px){
+      .app{grid-template-columns:1fr;}
+      .sidebar{order:2}
+      .main{order:1}
+    }
+
+    /* small helpers */
+    .muted{color:var(--muted);font-size:13px}
+    .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    button.primary{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;color:white;font-weight:700;cursor:pointer}
+    .copy-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="Conversor de unidades">
+    <aside class="sidebar" aria-hidden="false">
+      <h1>Conversor de Unidades</h1>
+      <p class="lead">Escolha a categoria — interface roxa com fundo preto. Funciona offline.</p>
+      <nav class="categories" aria-label="Categorias">
+        <button class="cat-btn active" data-cat="length">Comprimento</button>
+        <button class="cat-btn" data-cat="weight">Massa</button>
+        <button class="cat-btn" data-cat="temperature">Temperatura</button>
+        <button class="cat-btn" data-cat="volume">Volume</button>
+        <button class="cat-btn" data-cat="speed">Velocidade</button>
+      </nav>
+      <div style="margin-top:18px">
+        <div class="footer-meta">Dica: digite um valor, escolha unidades e veja a conversão instantânea.</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="top-row">
+        <div>
+          <div class="muted">Categoria</div>
+          <div id="current-cat" style="font-weight:800;font-size:18px">Comprimento</div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted">Tema</div>
+          <div style="font-weight:700">Roxo • Fundo Preto</div>
+        </div>
+      </div>
+
+      <section class="card" id="converter">
+        <div class="row" style="gap:18px;margin-bottom:12px">
+          <div style="flex:1">
+            <label for="value">Valor</label>
+            <input id="value" type="number" inputmode="decimal" placeholder="Ex: 1.5" value="1">
+          </div>
+          <div style="width:220px">
+            <label for="from">De</label>
+            <select id="from"></select>
+          </div>
+          <div style="width:220px">
+            <label for="to">Para</label>
+            <select id="to"></select>
+          </div>
+        </div>
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <div>
+            <div class="muted">Resultado</div>
+            <div class="result" id="output">—</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="copy-btn" id="swap">Trocar</button>
+            <button class="primary" id="convert">Converter</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="extras">
+        <div id="extras">
+          <h3 style="margin:0 0 8px">Informações</h3>
+          <p class="muted" style="margin:0">O conversor usa unidades base internas para garantir precisão. Temperaturas usam fórmulas diretas.</p>
+        </div>
+      </section>
+
+      <section class="card" style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div class="muted">Última operação</div>
+          <div id="last" style="font-weight:700">—</div>
+        </div>
+        <div style="min-width:160px;display:flex;flex-direction:column;justify-content:center;gap:8px">
+          <button class="copy-btn" id="copyResult">Copiar resultado</button>
+          <button class="copy-btn" id="reset">Resetar</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // === Unidades definidas por categoria ===
+    const UNITS = {
+      length: {
+        name: 'Comprimento',
+        units: {
+          m: {name:'Metro', to_base: v=>v, from_base: v=>v},
+          km: {name:'Quilômetro', to_base: v=>v*1000, from_base: v=>v/1000},
+          cm: {name:'Centímetro', to_base: v=>v/100, from_base: v=>v*100},
+          mm: {name:'Milímetro', to_base: v=>v/1000, from_base: v=>v*1000},
+          in: {name:'Polegada', to_base: v=>v*0.0254, from_base: v=>v/0.0254},
+          ft: {name:'Pé', to_base: v=>v*0.3048, from_base: v=>v/0.3048},
+          yd: {name:'Jarda', to_base: v=>v*0.9144, from_base: v=>v/0.9144},
+          mi: {name:'Milha', to_base: v=>v*1609.344, from_base: v=>v/1609.344},
+        }
+      },
+      weight: {
+        name:'Massa',
+        units: {
+          kg:{name:'Kilograma', to_base:v=>v, from_base:v=>v},
+          g:{name:'Grama', to_base:v=>v/1000, from_base:v=>v*1000},
+          mg:{name:'Miligrama', to_base:v=>v/1e6, from_base:v=>v*1e6},
+          lb:{name:'Libra', to_base:v=>v*0.45359237, from_base:v=>v/0.45359237},
+          oz:{name:'Onça', to_base:v=>v*0.028349523125, from_base:v=>v/0.028349523125},
+        }
+      },
+      temperature: {
+        name:'Temperatura',
+        units: {
+          C:{name:'Celsius'},
+          F:{name:'Fahrenheit'},
+          K:{name:'Kelvin'},
+        }
+      },
+      volume: {
+        name:'Volume',
+        units: {
+          L:{name:'Litro', to_base:v=>v, from_base:v=>v},
+          mL:{name:'Mililitro', to_base:v=>v/1000, from_base:v=>v*1000},
+          m3:{name:'Metro cúbico', to_base:v=>v*1000, from_base:v=>v/1000},
+          gal:{name:'Galão (US)', to_base:v=>v*3.785411784, from_base:v=>v/3.785411784},
+          cup:{name:'Xícara (US)', to_base:v=>v*0.2365882365, from_base:v=>v/0.2365882365},
+        }
+      },
+      speed: {
+        name:'Velocidade',
+        units: {
+          'm/s':{name:'m/s', to_base:v=>v, from_base:v=>v},
+          'km/h':{name:'km/h', to_base:v=>v/3.6, from_base:v=>v*3.6},
+          mph:{name:'mph', to_base:v=>v*0.44704, from_base:v=>v/0.44704},
+          'knot':{name:'Nó (knot)', to_base:v=>v*0.514444444, from_base:v=>v/0.514444444}
+        }
+      }
+    };
+
+    // elementos
+    const catButtons = document.querySelectorAll('.cat-btn');
+    const currentCatLabel = document.getElementById('current-cat');
+    const fromSelect = document.getElementById('from');
+    const toSelect = document.getElementById('to');
+    const valueInput = document.getElementById('value');
+    const output = document.getElementById('output');
+    const convertBtn = document.getElementById('convert');
+    const swapBtn = document.getElementById('swap');
+    const last = document.getElementById('last');
+    const copyResult = document.getElementById('copyResult');
+    const resetBtn = document.getElementById('reset');
+
+    let currentCat = 'length';
+
+    function setActiveCategory(cat){
+      currentCat = cat;
+      catButtons.forEach(b=> b.classList.toggle('active', b.dataset.cat===cat));
+      currentCatLabel.textContent = UNITS[cat].name;
+      populateSelects(cat);
+      compute();
+    }
+
+    function populateSelects(cat){
+      const units = UNITS[cat].units;
+      fromSelect.innerHTML='';
+      toSelect.innerHTML='';
+      for(const key of Object.keys(units)){
+        const opt1 = document.createElement('option'); opt1.value=key; opt1.textContent = `${units[key].name} (${key})`;
+        const opt2 = opt1.cloneNode(true);
+        fromSelect.appendChild(opt1);
+        toSelect.appendChild(opt2);
+      }
+      // default: first -> second
+      if(fromSelect.options.length>1) toSelect.selectedIndex = 1;
+    }
+
+    // cálculo de temperatura separado
+    function convertTemperature(value, from, to){
+      let c;
+      if(from==='C') c = value;
+      if(from==='F') c = (value - 32) * 5/9;
+      if(from==='K') c = value - 273.15;
+      let out;
+      if(to==='C') out = c;
+      if(to==='F') out = c * 9/5 + 32;
+      if(to==='K') out = c + 273.15;
+      return out;
+    }
+
+    function compute(){
+      const cat = currentCat;
+      const v = parseFloat(valueInput.value);
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      if(!isFinite(v) || from===to){
+        output.textContent = from===to ? formatNumber(v) : '—';
+        return;
+      }
+      let res;
+      if(cat==='temperature'){
+        res = convertTemperature(v, from, to);
+      } else {
+        const u = UNITS[cat].units;
+        const toBase = u[from].to_base(v);
+        res = u[to].from_base(toBase);
+      }
+      output.textContent = formatNumber(res) + ` ${to}`;
+      last.textContent = `${v} ${from} → ${formatNumber(res)} ${to}`;
+      return res;
+    }
+
+    function formatNumber(n){
+      if(!isFinite(n)) return '—';
+      // limita casas decimais conforme magnitude
+      const abs = Math.abs(n);
+      if(abs===0) return '0';
+      if(abs<0.0001) return n.toExponential(3);
+      if(abs<1) return n.toFixed(6).replace(/(?:\.\d+?)0+$/,'').replace(/\.$/,'');
+      if(abs<100) return n.toFixed(4).replace(/(?:\.\d+?)0+$/,'').replace(/\.$/,'');
+      return Number(n.toFixed(3)).toLocaleString('pt-BR');
+    }
+
+    // eventos
+    catButtons.forEach(b=> b.addEventListener('click', ()=> setActiveCategory(b.dataset.cat)));
+    convertBtn.addEventListener('click', ()=> compute());
+    valueInput.addEventListener('input', ()=> compute());
+    fromSelect.addEventListener('change', ()=> compute());
+    toSelect.addEventListener('change', ()=> compute());
+    swapBtn.addEventListener('click', ()=>{
+      const a = fromSelect.selectedIndex;
+      const b = toSelect.selectedIndex;
+      fromSelect.selectedIndex = b;
+      toSelect.selectedIndex = a;
+      compute();
+    });
+    copyResult.addEventListener('click', ()=>{
+      const text = output.textContent || '';
+      if(!text || text==='—') return alert('Nada para copiar');
+      navigator.clipboard?.writeText(text).then(()=>{
+        copyResult.textContent = 'Copiado!';
+        setTimeout(()=> copyResult.textContent = 'Copiar resultado',1200);
+      }).catch(()=> alert('Não foi possível copiar'));
+    });
+    resetBtn.addEventListener('click', ()=>{
+      valueInput.value = '1';
+      setActiveCategory('length');
+      output.textContent='—';
+      last.textContent='—';
+    });
+
+    // inicializa
+    setActiveCategory(currentCat);
+    // compute initial
+    compute();
+
+    // acessibilidade: tecla Enter converte
+    document.getElementById('value').addEventListener('keypress', function(e){
+      if(e.key==='Enter') compute();
+    });
+
+    // segurança: trata unidades sem to_base em categorias não tempera
+    for(const cat in UNITS){
+      if(cat==='temperature') continue;
+      for(const k in UNITS[cat].units){
+        const u = UNITS[cat].units[k];
+        if(typeof u.to_base !== 'function' || typeof u.from_base !== 'function'){
+          console.warn('Unidade sem conversor:', cat, k);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
